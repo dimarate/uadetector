@@ -5,8 +5,8 @@
 	<parent>
 		<relativePath>../</relativePath>
 		<groupId>net.sf.uadetector</groupId>
-		<artifactId>uadetector-parent</artifactId>
-		<version>2014.11-SNAPSHOT</version>
+		<artifactId>uadetector-leon</artifactId>
+		<version>2018.01-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>distribution</artifactId>
@@ -22,13 +22,13 @@
 	<dependencies>
 		<dependency>
 			<groupId>net.sf.uadetector</groupId>
-			<artifactId>uadetector-core</artifactId>
-			<version>0.9.23-SNAPSHOT</version>
+			<artifactId>uadetector-core-leon</artifactId>
+			<version>0.9.24-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.uadetector</groupId>
-			<artifactId>uadetector-resources</artifactId>
-			<version>2014.11-SNAPSHOT</version>
+			<artifactId>uadetector-resources-leon</artifactId>
+			<version>2018.01-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

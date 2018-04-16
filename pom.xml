@@ -1,21 +1,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>7</version>
-	</parent>
-
 	<groupId>net.sf.uadetector</groupId>
-	<artifactId>uadetector-parent</artifactId>
-	<version>2014.11-SNAPSHOT</version>
+	<artifactId>uadetector-leon</artifactId>
+	<version>2018.01-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>UADetector</name>
-	<description>UADetector is a library to identify over 190 different desktop and mobile browsers and 130 other User-Agents like feed readers, email clients and multimedia players. In addition, even more than 400 robots like BingBot, Googlebot or Yahoo Bot can be identified.</description>
+	<distributionManagement>
+		<repository>
+			<id>artifactory.leoncorp.net</id>
+			<name>libs-develop</name>
+			<url>https://artifactory.leoncorp.net/artifactory/libs-develop-local</url>
+		</repository>
+	</distributionManagement>
+
+	<name>UADetector-Leon</name>
+	<description>UADetector-Leon is a library to identify over 190 different desktop and mobile browsers and 130 other User-Agents like feed readers, email clients and multimedia players. In addition, even more than 400 robots like BingBot, Googlebot or Yahoo Bot can be identified.</description>
 	<url>http://uadetector.sourceforge.net/</url>
-	<inceptionYear>2011</inceptionYear>
+	<inceptionYear>2018</inceptionYear>
 
 	<developers>
 		<developer>
@@ -57,14 +59,6 @@
 		<module>modules/uadetector-resources</module>
 		<module>distribution</module>
 	</modules>
-
-	<distributionManagement>
-		<downloadUrl>http://uadetector.sourceforge.net/download.html</downloadUrl>
-		<site>
-			<id>shell.sourceforge.net</id>
-			<url>scp://shell.sourceforge.net/home/project-web/uadetector/htdocs</url>
-		</site>
-	</distributionManagement>
 
 	<issueManagement>
 		<url>https://github.com/before/uadetector/issues</url>

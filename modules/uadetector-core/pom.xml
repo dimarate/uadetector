@@ -5,8 +5,8 @@
 	<parent>
 		<relativePath>../../</relativePath>
 		<groupId>net.sf.uadetector</groupId>
-		<artifactId>uadetector-parent</artifactId>
-		<version>2014.11-SNAPSHOT</version>
+		<artifactId>uadetector-leon</artifactId>
+		<version>2018.01-SNAPSHOT</version>
 	</parent>
 
 	<properties>
@@ -14,13 +14,21 @@
 		<bundle.namespace>net.sf.uadetector</bundle.namespace>
 	</properties>
 
-	<artifactId>uadetector-core</artifactId>
-	<version>0.9.23-SNAPSHOT</version>
+	<artifactId>uadetector-core-leon</artifactId>
+	<version>0.9.24-SNAPSHOT</version>
 
 	<name>UADetector :: Core</name>
 	<description>The UADetector core library includes the API and implementation to read the detection information and the functions to identify User-Agents, but not the database (also known as UAS data). The UAS data can be found in the resources module.</description>
 
 	<packaging>bundle</packaging>
+
+	<distributionManagement>
+		<repository>
+			<id>artifactory.leoncorp.net</id>
+			<name>libs-develop</name>
+			<url>https://artifactory.leoncorp.net/artifactory/libs-develop-local</url>
+		</repository>
+	</distributionManagement>
 
 	<licenses>
 		<license>
@@ -125,6 +133,30 @@
 						<_include>-osgi.bnd</_include>
 					</instructions>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>

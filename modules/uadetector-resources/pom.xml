@@ -5,8 +5,8 @@
 	<parent>
 		<relativePath>../../</relativePath>
 		<groupId>net.sf.uadetector</groupId>
-		<artifactId>uadetector-parent</artifactId>
-		<version>2014.11-SNAPSHOT</version>
+		<artifactId>uadetector-leon</artifactId>
+		<version>2018.01-SNAPSHOT</version>
 	</parent>
 
 	<properties>
@@ -14,20 +14,28 @@
 		<bundle.namespace>net.sf.uadetector.resources</bundle.namespace>
 	</properties>
 
-	<artifactId>uadetector-resources</artifactId>
+	<artifactId>uadetector-resources-leon</artifactId>
 
 	<name>UADetector :: Resources</name>
 	<description>This package contains a verified version of the data file from http://user-agent-string.info. During the verification process the data are checked for ability to run against the current implementation. The goal is to provide frequently updated resources for detection of user agents without having to release a new implementation.</description>
 
 	<packaging>bundle</packaging>
 
+	<distributionManagement>
+		<repository>
+			<id>artifactory.leoncorp.net</id>
+			<name>libs-develop</name>
+			<url>https://artifactory.leoncorp.net/artifactory/libs-develop-local</url>
+		</repository>
+	</distributionManagement>
+
 	<dependencies>
 
 		<!-- internal -->
 		<dependency>
 			<groupId>net.sf.uadetector</groupId>
-			<artifactId>uadetector-core</artifactId>
-			<version>0.9.23-SNAPSHOT</version>
+			<artifactId>uadetector-core-leon</artifactId>
+			<version>0.9.24-SNAPSHOT</version>
 		</dependency>
 
 		<!-- Logging -->
@@ -97,6 +105,30 @@
 						<_include>-osgi.bnd</_include>
 					</instructions>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
