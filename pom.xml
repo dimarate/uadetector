@@ -3,7 +3,7 @@
 
 	<groupId>net.sf.uadetector</groupId>
 	<artifactId>uadetector-leon</artifactId>
-	<version>2018.01-SNAPSHOT</version>
+	<version>2018.01</version>
 	<packaging>pom</packaging>
 
 	<distributionManagement>
@@ -51,7 +51,7 @@
 		<connection>scm:git:git://github.com/dimarate/uadetector.git</connection>
 		<developerConnection>scm:git:git@github.com:dimarate/uadetector-leon.git</developerConnection>
 		<url>https://github.com/dimarate/uadetector-leon</url>
-		<tag>HEAD</tag>
+		<tag>2018.01</tag>
 	</scm>
 
 	<modules>
