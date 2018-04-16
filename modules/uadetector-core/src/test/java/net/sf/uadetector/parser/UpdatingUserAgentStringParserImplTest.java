@@ -148,7 +148,7 @@ public class UpdatingUserAgentStringParserImplTest {
 		assertThat(os.getName()).isEqualTo("OS X 10.6 Snow Leopard");
 		assertThat(os.getProducer()).isEqualTo("Apple Computer, Inc.");
 		assertThat(os.getProducerUrl()).isEqualTo("http://www.apple.com/");
-		assertThat(os.getUrl()).isEqualTo("http://www.apple.com/osx/");
+		assertThat(os.getUrl()).isEqualTo("http://en.wikipedia.org/wiki/Mac_OS_X_Snow_Leopard");
 
 		// check device category informations
 		final DeviceCategory category = agent.getDeviceCategory();
@@ -179,7 +179,7 @@ public class UpdatingUserAgentStringParserImplTest {
 		assertThat(os.getName()).isEqualTo("OS X 10.6 Snow Leopard");
 		assertThat(os.getProducer()).isEqualTo("Apple Computer, Inc.");
 		assertThat(os.getProducerUrl()).isEqualTo("http://www.apple.com/");
-		assertThat(os.getUrl()).isEqualTo("http://www.apple.com/osx/");
+		assertThat(os.getUrl()).isEqualTo("http://en.wikipedia.org/wiki/Mac_OS_X_Snow_Leopard");
 
 		// check device category informations
 		final DeviceCategory category = agent.getDeviceCategory();
@@ -243,7 +243,7 @@ public class UpdatingUserAgentStringParserImplTest {
 		assertThat(os.getName()).isEqualTo("OS X 10.5 Leopard");
 		assertThat(os.getProducer()).isEqualTo("Apple Computer, Inc.");
 		assertThat(os.getProducerUrl()).isEqualTo("http://www.apple.com/");
-		assertThat(os.getUrl()).isEqualTo("http://www.apple.com/osx/");
+		assertThat(os.getUrl()).isEqualTo("http://en.wikipedia.org/wiki/Mac_OS_X_Leopard");
 
 		// check device category informations
 		final DeviceCategory category = agent.getDeviceCategory();

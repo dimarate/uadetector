@@ -23,6 +23,8 @@ import javax.annotation.Nonnull;
 
 import net.sf.qualitycheck.Check;
 import net.sf.uadetector.internal.data.domain.Browser;
+import net.sf.uadetector.internal.data.domain.BrowserEngine;
+import net.sf.uadetector.internal.data.domain.BrowserEnginePattern;
 import net.sf.uadetector.internal.data.domain.BrowserOperatingSystemMapping;
 import net.sf.uadetector.internal.data.domain.BrowserPattern;
 import net.sf.uadetector.internal.data.domain.BrowserType;
@@ -192,7 +194,27 @@ public final class XmlDataHandler extends DefaultHandler {
 		/**
 		 * Tag name of the data version
 		 */
-		VERSION("version");
+		VERSION("version"),
+
+		/**
+		 * Tag name of a engine entry
+		 */
+		ENGINE("engine"),
+
+		/**
+		 * Tag name of the informational URL of a engine entry
+		 */
+		ENGINE_INFO_URL("engine_info_url"),
+
+		/**
+		 * Tag name of an browser engine pattern
+		 */
+		BROWSER_ENGINE_REG("browser_engine_reg"),
+
+		/**
+		 * Tag name of the data version
+		 */
+		ENGINE_ID("engine_id");
 
 		public static Tag evaluate(@Nonnull final String tagName) {
 			Check.notNull(tagName, "tagName");
@@ -217,6 +239,14 @@ public final class XmlDataHandler extends DefaultHandler {
 
 		public static boolean isBrowserTag(final String tagName) {
 			return BROWSER.getTagName().equalsIgnoreCase(tagName);
+		}
+
+		public static boolean isBrowserEngineTag(final String tagName) {
+			return ENGINE.getTagName().equalsIgnoreCase(tagName);
+		}
+
+		public static boolean isBrowserEnginePatternTag(final String tagName) {
+			return BROWSER_ENGINE_REG.getTagName().equalsIgnoreCase(tagName);
 		}
 
 		public static boolean isBrowserTypeTag(final String tagName) {
@@ -308,9 +338,13 @@ public final class XmlDataHandler extends DefaultHandler {
 
 	private Device.Builder deviceBuilder = new Device.Builder();
 
+	private BrowserEngine.Builder browserEngineBuilder = new BrowserEngine.Builder();
+
 	private BrowserOperatingSystemMapping.Builder browserOsMappingBuilder = new BrowserOperatingSystemMapping.Builder();
 
 	private BrowserPattern.Builder browserPatternBuilder = new BrowserPattern.Builder();
+
+	private BrowserEnginePattern.Builder browserEnginePatternBuilder = new BrowserEnginePattern.Builder();
 
 	private DevicePattern.Builder devicePatternBuilder = new DevicePattern.Builder();
 
@@ -345,6 +379,10 @@ public final class XmlDataHandler extends DefaultHandler {
 	private boolean isOperatingSystemPattern = false;
 
 	private boolean isRobot = false;
+
+	private boolean isBrowserEngine = false;
+
+	private boolean isBrowserEnginePattern = false;
 
 	private OperatingSystem.Builder operatingSystemBuilder = new OperatingSystem.Builder();
 
@@ -421,6 +459,30 @@ public final class XmlDataHandler extends DefaultHandler {
 				deviceBuilder.setIcon(buffer.toString());
 			} else if (currentTag == Tag.DEVICE_INFO_URL) {
 				deviceBuilder.setInfoUrl(buffer.toString());
+			}
+		}
+	}
+
+	private void addToBrowserEngineBuilder() {
+		if (isBrowserEngine) {
+			if (currentTag == Tag.ID) {
+				browserEngineBuilder.setId(buffer.toString());
+			} else if (currentTag == Tag.NAME) {
+				browserEngineBuilder.setFamilyName(buffer.toString());
+			} else if (currentTag == Tag.ENGINE_INFO_URL) {
+				browserEngineBuilder.setInfoUrl(buffer.toString());
+			}
+		}
+	}
+
+	private void addToBrowserEnginePatternBuilder() {
+		if (isBrowserEnginePattern) {
+			if (currentTag == Tag.PATTERN_ORDER) {
+				browserEnginePatternBuilder.setPosition(buffer.toString());
+			} else if (currentTag == Tag.ENGINE_ID) {
+				browserEnginePatternBuilder.setId(buffer.toString());
+			} else if (currentTag == Tag.PATTERN_REGEX) {
+				browserEnginePatternBuilder.setPerlRegularExpression(buffer.toString());
 			}
 		}
 	}
@@ -528,6 +590,12 @@ public final class XmlDataHandler extends DefaultHandler {
 		} else if (Tag.isDevicePatternTag(tagName)) {
 			saveAndResetDevicePatternBuilder();
 			isDevicePattern = false;
+		} else if (Tag.isBrowserEngineTag(tagName)) {
+			saveAndResetBrowserEngineBuilder();
+			isBrowserEngine = false;
+		} else if (Tag.isBrowserEnginePatternTag(tagName)) {
+			saveAndResetBrowserEnginePatternBuilder();
+			isBrowserEnginePattern = false;
 		}
 
 		currentTag = null;
@@ -604,9 +672,23 @@ public final class XmlDataHandler extends DefaultHandler {
 		deviceBuilder = new Device.Builder();
 	}
 
+	private void saveAndResetBrowserEngineBuilder() {
+		dataBuilder.appendBrowserEngineBuilder(browserEngineBuilder);
+		browserEngineBuilder = new BrowserEngine.Builder();
+	}
+
 	private void saveAndResetDevicePatternBuilder() {
 		try {
 			dataBuilder.appendDevicePattern(devicePatternBuilder.build());
+		} catch (final IllegalArgumentException e) {
+			LOG.warn("Can not append device pattern: " + e.getLocalizedMessage());
+		}
+		devicePatternBuilder = new DevicePattern.Builder();
+	}
+
+	private void saveAndResetBrowserEnginePatternBuilder() {
+		try {
+			dataBuilder.appendBrowserEnginePattern(browserEnginePatternBuilder.build());
 		} catch (final IllegalArgumentException e) {
 			LOG.warn("Can not append device pattern: " + e.getLocalizedMessage());
 		}
@@ -654,6 +736,10 @@ public final class XmlDataHandler extends DefaultHandler {
 			isDevice = true;
 		} else if (Tag.isDevicePatternTag(tagName)) {
 			isDevicePattern = true;
+		} else if (Tag.isBrowserEngineTag(tagName)) {
+			isBrowserEngine = true;
+		} else if (Tag.isBrowserEnginePatternTag(tagName)) {
+			isBrowserEnginePattern = true;
 		}
 
 		currentTag = Tag.evaluate(tagName);
@@ -695,6 +781,12 @@ public final class XmlDataHandler extends DefaultHandler {
 
 		// build browser pattern
 		addToDevicePatternBuilder();
+
+		// build browser engine
+		addToBrowserEngineBuilder();
+
+		// build browser engine pattern
+		addToBrowserEnginePatternBuilder();
 
 		buffer = new StringBuilder();
 	}

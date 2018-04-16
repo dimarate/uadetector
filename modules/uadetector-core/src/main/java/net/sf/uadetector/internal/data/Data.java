@@ -34,6 +34,8 @@ import javax.annotation.concurrent.Immutable;
 
 import net.sf.qualitycheck.Check;
 import net.sf.uadetector.internal.data.domain.Browser;
+import net.sf.uadetector.internal.data.domain.BrowserEngine;
+import net.sf.uadetector.internal.data.domain.BrowserEnginePattern;
 import net.sf.uadetector.internal.data.domain.BrowserOperatingSystemMapping;
 import net.sf.uadetector.internal.data.domain.BrowserPattern;
 import net.sf.uadetector.internal.data.domain.BrowserType;
@@ -60,7 +62,8 @@ public class Data implements Serializable {
 			new HashMap<Integer, BrowserType>(0), new TreeMap<BrowserPattern, Browser>(), new HashSet<BrowserOperatingSystemMapping>(0),
 			new HashSet<OperatingSystem>(0), new HashMap<Integer, SortedSet<OperatingSystemPattern>>(0),
 			new TreeMap<OperatingSystemPattern, OperatingSystem>(), new ArrayList<Robot>(0), new HashSet<Device>(0),
-			new HashMap<Integer, SortedSet<DevicePattern>>(0), new TreeMap<DevicePattern, Device>(), "");
+			new HashMap<Integer, SortedSet<DevicePattern>>(0), new TreeMap<DevicePattern, Device>(), "",
+			new HashSet<BrowserEngine>(0), new HashMap<Integer, SortedSet<BrowserEnginePattern>>(0), new TreeMap<BrowserEnginePattern, BrowserEngine>());
 
 	private static final long serialVersionUID = 8522012551928801089L;
 
@@ -106,6 +109,15 @@ public class Data implements Serializable {
 	@Nonnull
 	private final String version;
 
+	@Nonnull
+	private final Map<Integer, SortedSet<BrowserEnginePattern>> browserEnginePatterns;
+
+	@Nonnull
+	private final Set<BrowserEngine> browserEngines;
+
+	@Nonnull
+	private final SortedMap<BrowserEnginePattern, BrowserEngine> patternToBrowserEngineMap;
+
 	public Data(@Nonnull final Set<Browser> browsers, @Nonnull final Map<Integer, SortedSet<BrowserPattern>> browserPatterns,
 			@Nonnull final Map<Integer, BrowserType> browserTypes, @Nonnull final SortedMap<BrowserPattern, Browser> patternToBrowserMap,
 			@Nonnull final Set<BrowserOperatingSystemMapping> browserToOperatingSystemMappings,
@@ -114,7 +126,10 @@ public class Data implements Serializable {
 			@Nonnull final SortedMap<OperatingSystemPattern, OperatingSystem> patternToOperatingSystemMap,
 			@Nonnull final List<Robot> robots, @Nonnull final Set<Device> devices,
 			@Nonnull final Map<Integer, SortedSet<DevicePattern>> devicePatterns,
-			@Nonnull final SortedMap<DevicePattern, Device> patternToDeviceMap, @Nonnull final String version) {
+			@Nonnull final SortedMap<DevicePattern, Device> patternToDeviceMap, @Nonnull final String version,
+			@Nonnull final Set<BrowserEngine> browserEngines,
+			@Nonnull final Map<Integer, SortedSet<BrowserEnginePattern>> browserEnginePatterns,
+			@Nonnull final SortedMap<BrowserEnginePattern, BrowserEngine> patternToBrowserEngineMap) {
 		Check.notNull(browsers, "browsers");
 		Check.notNull(browserPatterns, "browserPatterns");
 		Check.notNull(browserTypes, "browserTypes");
@@ -128,6 +143,9 @@ public class Data implements Serializable {
 		Check.notNull(devicePatterns, "devicePatterns");
 		Check.notNull(patternToDeviceMap, "patternToDeviceMap");
 		Check.notNull(version, "version");
+		Check.notNull(browserEngines, "browserEngines");
+		Check.notNull(browserEnginePatterns, "browserEnginePatterns");
+		Check.notNull(patternToBrowserEngineMap, "patternToBrowserEngineMap");
 
 		this.browsers = Collections.unmodifiableSet(new HashSet<Browser>(browsers));
 		this.browserPatterns = Collections.unmodifiableMap(new HashMap<Integer, SortedSet<BrowserPattern>>(browserPatterns));
@@ -145,6 +163,9 @@ public class Data implements Serializable {
 		this.devicePatterns = Collections.unmodifiableMap(new HashMap<Integer, SortedSet<DevicePattern>>(devicePatterns));
 		this.patternToDeviceMap = Collections.unmodifiableSortedMap(new TreeMap<DevicePattern, Device>(patternToDeviceMap));
 		this.version = Check.notNull(version, "version");
+		this.browserEngines = Collections.unmodifiableSet(new HashSet<BrowserEngine>(browserEngines));
+		this.browserEnginePatterns = Collections.unmodifiableMap(new HashMap<Integer, SortedSet<BrowserEnginePattern>>(browserEnginePatterns));
+		this.patternToBrowserEngineMap = Collections.unmodifiableSortedMap(new TreeMap<BrowserEnginePattern, BrowserEngine>(patternToBrowserEngineMap));
 	}
 
 	@Override
@@ -196,6 +217,15 @@ public class Data implements Serializable {
 			return false;
 		}
 		if (!version.equals(other.version)) {
+			return false;
+		}
+		if (!browserEngines.equals(other.browserEngines)) {
+			return false;
+		}
+		if (!browserEnginePatterns.equals(other.browserEnginePatterns)) {
+			return false;
+		}
+		if (!patternToBrowserEngineMap.equals(other.patternToBrowserEngineMap)) {
 			return false;
 		}
 		return true;
@@ -271,6 +301,21 @@ public class Data implements Serializable {
 		return version;
 	}
 
+	@Nonnull
+	public Set<BrowserEngine> getBrowserEngines() {
+		return browserEngines;
+	}
+
+	@Nonnull
+	public Map<Integer, SortedSet<BrowserEnginePattern>> getBrowserEnginePatterns() {
+		return browserEnginePatterns;
+	}
+
+	@Nonnull
+	public SortedMap<BrowserEnginePattern, BrowserEngine> getPatternToBrowserEngineMap() {
+		return patternToBrowserEngineMap;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -288,6 +333,9 @@ public class Data implements Serializable {
 		result = prime * result + devicePatterns.hashCode();
 		result = prime * result + patternToDeviceMap.hashCode();
 		result = prime * result + version.hashCode();
+		result = prime * result + browserEngines.hashCode();
+		result = prime * result + browserEnginePatterns.hashCode();
+		result = prime * result + patternToBrowserEngineMap.hashCode();
 		return result;
 	}
 
@@ -339,6 +387,12 @@ public class Data implements Serializable {
 		builder.append("device patterns:\t");
 		builder.append(patternToDeviceMap.size());
 		builder.append('\n');
+		builder.append("browser engines:\t");
+		builder.append(browserEngines.size());
+		builder.append('\n');
+		builder.append("browser engine patterns:\t");
+		builder.append(patternToBrowserEngineMap.size());
+		builder.append('\n');
 		builder.append("----------------------------------------------------------------");
 		return builder.toString();
 	}
@@ -372,6 +426,12 @@ public class Data implements Serializable {
 		builder.append(patternToDeviceMap);
 		builder.append(", version=");
 		builder.append(version);
+		builder.append(", browserEngines=");
+		builder.append(browserEngines);
+		builder.append(", browserEnginePatterns=");
+		builder.append(browserEnginePatterns);
+		builder.append(", patternToBrowserEngineMap=");
+		builder.append(patternToBrowserEngineMap);
 		builder.append("]");
 		return builder.toString();
 	}

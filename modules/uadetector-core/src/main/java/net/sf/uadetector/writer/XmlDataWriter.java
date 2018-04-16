@@ -42,6 +42,8 @@ import net.sf.uadetector.internal.data.Data;
 import net.sf.uadetector.internal.data.IdentifiableComparator;
 import net.sf.uadetector.internal.data.OrderedPatternComparator;
 import net.sf.uadetector.internal.data.domain.Browser;
+import net.sf.uadetector.internal.data.domain.BrowserEngine;
+import net.sf.uadetector.internal.data.domain.BrowserEnginePattern;
 import net.sf.uadetector.internal.data.domain.BrowserOperatingSystemMapping;
 import net.sf.uadetector.internal.data.domain.BrowserPattern;
 import net.sf.uadetector.internal.data.domain.BrowserType;
@@ -105,6 +107,12 @@ public final class XmlDataWriter {
 		String URL = "url";
 		String URL_COMPANY = "url_company";
 		String USERAGENT = "useragent";
+		String ENGINE_ID = "engine_id";
+		String ENGINE_INFO_URL = "engine_info_url";
+		String BROWSER_ENGINES = "browser_engines";
+		String BROWSER_ENGINES_REG = "browser_engines_reg";
+		String BROWSER_ENGINE_REG = "browser_engine_reg";
+		String ENGINE = "engine";
 	}
 
 	private static final String INDENT_AMOUNT = "4";
@@ -381,6 +389,54 @@ public final class XmlDataWriter {
 		return r;
 	}
 
+	private static Element createBrowserEngine(final BrowserEngine browserEngine, final Document doc) {
+		final Element b = doc.createElement(Tag.ENGINE);
+		final Element id = doc.createElement(Tag.ID);
+		id.appendChild(doc.createTextNode(String.valueOf(browserEngine.getId())));
+		b.appendChild(id);
+		final Element name = doc.createElement(Tag.NAME);
+		name.appendChild(doc.createTextNode(browserEngine.getFamilyName()));
+		b.appendChild(name);
+		final Element engineInfoUrl = doc.createElement(Tag.ENGINE_INFO_URL);
+		engineInfoUrl.appendChild(doc.createCDATASection(browserEngine.getInfoUrl()));
+		b.appendChild(engineInfoUrl);
+		return b;
+	}
+
+	private static Element createBrowserEnginePatterns(final Data data, final Document doc) {
+		final List<BrowserEnginePattern> patterns = new ArrayList<BrowserEnginePattern>(data.getDevicePatterns().size());
+		for (final Entry<Integer, SortedSet<BrowserEnginePattern>> entry : data.getBrowserEnginePatterns().entrySet()) {
+			patterns.addAll(entry.getValue());
+		}
+		Collections.sort(patterns, new OrderedPatternComparator<BrowserEnginePattern>());
+
+		final Element deviceTypesElement = doc.createElement(Tag.BROWSER_ENGINES_REG);
+		for (final BrowserEnginePattern pattern : patterns) {
+			final Element t = doc.createElement(Tag.BROWSER_ENGINE_REG);
+			final Element order = doc.createElement(Tag.ORDER);
+			order.appendChild(doc.createTextNode(String.valueOf(pattern.getPosition())));
+			t.appendChild(order);
+			final Element id = doc.createElement(Tag.ENGINE_ID);
+			id.appendChild(doc.createTextNode(String.valueOf(pattern.getId())));
+			t.appendChild(id);
+			final Element family = doc.createElement(Tag.REGSTRING);
+			family.appendChild(doc.createTextNode(RegularExpressionConverter.convertPatternToPerlRegex(pattern.getPattern())));
+			t.appendChild(family);
+			deviceTypesElement.appendChild(t);
+		}
+		return deviceTypesElement;
+	}
+
+	private static Element createBrowserEngines(final Data data, final Document doc) {
+		final Element browserEngineElement = doc.createElement(Tag.BROWSER_ENGINES);
+		final List<BrowserEngine> engines = new ArrayList<BrowserEngine>(data.getBrowserEngines());
+		Collections.sort(engines, IdentifiableComparator.INSTANCE);
+		for (final BrowserEngine browserEngine : engines) {
+			browserEngineElement.appendChild(createBrowserEngine(browserEngine, doc));
+		}
+		return browserEngineElement;
+	}
+
 	@Nonnull
 	static DocumentBuilder newDocumentBuilder() throws ParserConfigurationException {
 		final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -438,6 +494,8 @@ public final class XmlDataWriter {
 		dataElement.appendChild(createOperatingSystemPatterns(data, doc));
 		dataElement.appendChild(createDevices(data, doc));
 		dataElement.appendChild(createDevicePatterns(data, doc));
+		dataElement.appendChild(createBrowserEngines(data, doc));
+		dataElement.appendChild(createBrowserEnginePatterns(data, doc));
 
 		// write the content to output stream
 		final DOMSource source = new DOMSource(doc);

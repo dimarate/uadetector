@@ -33,6 +33,8 @@ import net.sf.qualitycheck.exception.IllegalNullArgumentException;
 import net.sf.uadetector.ReadableDeviceCategory.Category;
 import net.sf.uadetector.UserAgentFamily;
 import net.sf.uadetector.internal.data.domain.Browser;
+import net.sf.uadetector.internal.data.domain.BrowserEngine;
+import net.sf.uadetector.internal.data.domain.BrowserEnginePattern;
 import net.sf.uadetector.internal.data.domain.BrowserOperatingSystemMapping;
 import net.sf.uadetector.internal.data.domain.BrowserPattern;
 import net.sf.uadetector.internal.data.domain.BrowserType;
@@ -270,7 +272,8 @@ public class DataTest {
 				new HashSet<BrowserOperatingSystemMapping>(0), new HashSet<OperatingSystem>(0),
 				new HashMap<Integer, SortedSet<OperatingSystemPattern>>(0), new TreeMap<OperatingSystemPattern, OperatingSystem>(),
 				new ArrayList<Robot>(0), new HashSet<Device>(0), new HashMap<Integer, SortedSet<DevicePattern>>(0),
-				new TreeMap<DevicePattern, Device>(), "");
+				new TreeMap<DevicePattern, Device>(), "", new HashSet<BrowserEngine>(0),
+				new HashMap<Integer, SortedSet<BrowserEnginePattern>>(0), new TreeMap<BrowserEnginePattern, BrowserEngine>());
 		assertThat(empty).isEqualTo(Data.EMPTY);
 		assertThat(Data.EMPTY.hashCode() == empty.hashCode()).isTrue();
 	}
@@ -452,6 +455,6 @@ public class DataTest {
 
 		assertThat(data.toString())
 				.isEqualTo(
-						"Data [browsers=[], browserPatterns={}, browserTypes={}, patternToBrowserMap={}, browserToOperatingSystemMap=[], operatingSystems=[], operatingSystemPatterns={}, patternToOperatingSystemMap={}, robots=[], devices=[], devicePatterns={}, patternToDeviceMap={}, version=test]");
+						"Data [browsers=[], browserPatterns={}, browserTypes={}, patternToBrowserMap={}, browserToOperatingSystemMap=[], operatingSystems=[], operatingSystemPatterns={}, patternToOperatingSystemMap={}, robots=[], devices=[], devicePatterns={}, patternToDeviceMap={}, version=test, browserEngines=[], browserEnginePatterns={}, patternToBrowserEngineMap={}]");
 	}
 }

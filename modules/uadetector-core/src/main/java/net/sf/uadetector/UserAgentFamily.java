@@ -754,6 +754,11 @@ public enum UserAgentFamily {
 	COPYRIGHT_SHERIFF("copyright sheriff", Pattern.compile("copyright sheriff")),
 
 	/**
+	 * Cordova Android
+	 */
+	CHROME_CORDOVA("Chrome Cordova", Pattern.compile("Chrome Cordova")),
+
+	/**
 	 * CorePlayer
 	 */
 	COREPLAYER("CorePlayer", Pattern.compile("CorePlayer")),

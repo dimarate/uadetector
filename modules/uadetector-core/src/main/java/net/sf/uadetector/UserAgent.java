@@ -55,6 +55,8 @@ public final class UserAgent implements ReadableUserAgent, Serializable {
 
 		private VersionNumber versionNumber = VersionNumber.UNKNOWN;
 
+		private BrowserEngine browserEngine = EMPTY.browserEngine;
+
 		public Builder() {
 			// default constructor
 		}
@@ -67,7 +69,7 @@ public final class UserAgent implements ReadableUserAgent, Serializable {
 		@Nonnull
 		public UserAgent build() {
 			return new UserAgent(deviceCategory, family, icon, name, operatingSystem, producer, producerUrl, type, typeName, url,
-					versionNumber);
+					versionNumber, browserEngine);
 		}
 
 		@Override
@@ -127,6 +129,11 @@ public final class UserAgent implements ReadableUserAgent, Serializable {
 		@Override
 		public VersionNumber getVersionNumber() {
 			return versionNumber;
+		}
+
+		@Override
+		public BrowserEngine getBrowserEngine() {
+			return browserEngine;
 		}
 
 		@Nonnull
@@ -223,10 +230,18 @@ public final class UserAgent implements ReadableUserAgent, Serializable {
 			return this;
 		}
 
+		@Nonnull
+		public Builder setBrowserEngine(@Nonnull final net.sf.uadetector.internal.data.domain.BrowserEngine browserEngine, @Nonnull final VersionNumber versionNumber) {
+			Check.notNull(browserEngine, "browserEngine");
+			Check.notNull(versionNumber, "versionNumber");
+			this.browserEngine = new BrowserEngine(browserEngine.getFamily(), browserEngine.getInfoUrl(), versionNumber);
+			return this;
+		}
+
 	}
 
 	public static final UserAgent EMPTY = new UserAgent(DeviceCategory.EMPTY, UserAgentFamily.UNKNOWN, "", "unknown",
-			OperatingSystem.EMPTY, "", "", UserAgentType.UNKNOWN, "", "", VersionNumber.UNKNOWN);
+			OperatingSystem.EMPTY, "", "", UserAgentType.UNKNOWN, "", "", VersionNumber.UNKNOWN, BrowserEngine.UNKNOWN);
 
 	/**
 	 * Serialization version
@@ -266,10 +281,13 @@ public final class UserAgent implements ReadableUserAgent, Serializable {
 	@Nonnull
 	private final VersionNumber versionNumber;
 
+	@Nonnull
+	private final BrowserEngine browserEngine;
+
 	public UserAgent(@Nonnull final DeviceCategory deviceType, @Nonnull final UserAgentFamily family, @Nonnull final String icon,
 			@Nonnull final String name, @Nonnull final OperatingSystem operatingSystem, @Nonnull final String producer,
 			@Nonnull final String producerUrl, @Nonnull final UserAgentType type, @Nonnull final String typeName,
-			@Nonnull final String url, @Nonnull final VersionNumber versionNumber) {
+			@Nonnull final String url, @Nonnull final VersionNumber versionNumber, @Nonnull final BrowserEngine browserEngine) {
 		Check.notNull(deviceType, "deviceType");
 		Check.notNull(family, "family");
 		Check.notNull(icon, "icon");
@@ -293,6 +311,7 @@ public final class UserAgent implements ReadableUserAgent, Serializable {
 		this.typeName = typeName;
 		this.url = url;
 		this.versionNumber = versionNumber;
+		this.browserEngine = browserEngine;
 	}
 
 	@Override
@@ -397,6 +416,11 @@ public final class UserAgent implements ReadableUserAgent, Serializable {
 	@Override
 	public VersionNumber getVersionNumber() {
 		return versionNumber;
+	}
+
+	@Override
+	public BrowserEngine getBrowserEngine() {
+		return browserEngine;
 	}
 
 	@Override

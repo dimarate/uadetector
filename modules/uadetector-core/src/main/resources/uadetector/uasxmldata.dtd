@@ -13,13 +13,15 @@
     type CDATA #IMPLIED
   >
 
-<!ELEMENT data (devices_reg|devices|operating_systems_reg|browsers_os|browsers_reg|browser_types|browsers|operating_systems|robots)*>
+<!ELEMENT data (devices_reg|devices|operating_systems_reg|browsers_os|browsers_reg|browser_types|browsers|operating_systems|browser_engines|browser_engines_reg|robots)*>
 
 <!ELEMENT robots (robot)*>
 
 <!ELEMENT robot (bot_info_url|icon|url_company|company|name|family|useragent|id)*>
 
 <!ELEMENT id (#PCDATA)>
+
+<!ELEMENT engine_id (#PCDATA)>
 
 <!ELEMENT useragent (#PCDATA)>
 
@@ -38,11 +40,21 @@
 
 <!ELEMENT operating_systems (os)*>
 
+<!ELEMENT browser_engines (engine)*>
+
+<!ELEMENT browser_engines_reg (browser_engine_reg)*>
+
 <!ELEMENT os (os_info_url|icon|url_company|company|url|name|family|id)*>
+
+<!ELEMENT engine (engine_info_url|name|id)*>
+
+<!ELEMENT browser_engine_reg (regstring|engine_id|order)*>
 
 <!ELEMENT url (#PCDATA)>
 
 <!ELEMENT os_info_url (#PCDATA)>
+
+<!ELEMENT engine_info_url (#PCDATA)>
 
 <!ELEMENT browsers (browser)*>
 

@@ -29,6 +29,8 @@ import net.sf.uadetector.VersionNumber;
 import net.sf.uadetector.datastore.DataStore;
 import net.sf.uadetector.internal.data.Data;
 import net.sf.uadetector.internal.data.domain.Browser;
+import net.sf.uadetector.internal.data.domain.BrowserEngine;
+import net.sf.uadetector.internal.data.domain.BrowserEnginePattern;
 import net.sf.uadetector.internal.data.domain.BrowserPattern;
 import net.sf.uadetector.internal.data.domain.Device;
 import net.sf.uadetector.internal.data.domain.DevicePattern;
@@ -66,6 +68,25 @@ public abstract class AbstractUserAgentStringParser implements UserAgentStringPa
 				}
 				builder.setVersionNumber(version);
 
+				break;
+			}
+		}
+	}
+
+	private static void examineAsBrowserEngine(final UserAgent.Builder builder, final Data data) {
+		Matcher matcher;
+		VersionNumber version = VersionNumber.UNKNOWN;
+
+		for (final Entry<BrowserEnginePattern, BrowserEngine> entry : data.getPatternToBrowserEngineMap().entrySet()) {
+			matcher = entry.getKey().getPattern().matcher(builder.getUserAgentString());
+			if (matcher.find()) {
+
+				// try to get the browser version from the first subgroup
+				if (matcher.groupCount() > ZERO_MATCHING_GROUPS) {
+					version = VersionNumber.parseVersion(matcher.group(1) != null ? matcher.group(1) : "");
+				}
+
+				builder.setBrowserEngine(entry.getValue(), version);
 				break;
 			}
 		}
@@ -202,6 +223,7 @@ public abstract class AbstractUserAgentStringParser implements UserAgentStringPa
 
 		if (!examineAsRobot(builder, data)) {
 			examineAsBrowser(builder, data);
+			examineAsBrowserEngine(builder, data);
 			examineOperatingSystem(builder, data);
 		}
 		examineDeviceCategory(builder, data);

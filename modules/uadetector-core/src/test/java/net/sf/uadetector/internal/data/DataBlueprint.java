@@ -15,11 +15,14 @@
  ******************************************************************************/
 package net.sf.uadetector.internal.data;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
@@ -29,6 +32,8 @@ import javax.annotation.concurrent.NotThreadSafe;
 import net.sf.uadetector.ReadableDeviceCategory.Category;
 import net.sf.uadetector.UserAgentFamily;
 import net.sf.uadetector.internal.data.domain.Browser;
+import net.sf.uadetector.internal.data.domain.BrowserEngine;
+import net.sf.uadetector.internal.data.domain.BrowserEnginePattern;
 import net.sf.uadetector.internal.data.domain.BrowserOperatingSystemMapping;
 import net.sf.uadetector.internal.data.domain.BrowserPattern;
 import net.sf.uadetector.internal.data.domain.BrowserType;
@@ -74,6 +79,12 @@ public final class DataBlueprint {
 	private SortedMap<DevicePattern, Device> patternToDeviceMap = Maps.newTreeMap();
 
 	private String version = "test-version";
+
+	private Set<BrowserEngine> browserEngines = new HashSet<BrowserEngine>();
+
+	private Map<Integer, SortedSet<BrowserEnginePattern>> browserEnginePatterns = new HashMap<Integer, SortedSet<BrowserEnginePattern>>();
+
+	private SortedMap<BrowserEnginePattern, BrowserEngine> patternToBrowserEngineMap = new TreeMap<BrowserEnginePattern, BrowserEngine>();
 
 	public DataBlueprint() {
 		final TreeSet<BrowserPattern> browserPatternSet = Sets.newTreeSet();
@@ -138,7 +149,7 @@ public final class DataBlueprint {
 	@Nonnull
 	public Data build() {
 		return new Data(browsers, browserPatterns, browserTypes, patternToBrowserMap, browserToOperatingSystemMappings, operatingSystems,
-				operatingSystemPatterns, patternToOperatingSystemMap, robots, devices, devicePatterns, patternToDeviceMap, version);
+				operatingSystemPatterns, patternToOperatingSystemMap, robots, devices, devicePatterns, patternToDeviceMap, version, browserEngines, browserEnginePatterns, patternToBrowserEngineMap);
 	}
 
 	public DataBlueprint devicePatterns(final Map<Integer, SortedSet<DevicePattern>> devicePatterns) {

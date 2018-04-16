@@ -119,4 +119,12 @@ public interface ReadableUserAgent {
 	@Nonnull
 	VersionNumber getVersionNumber();
 
+	/**
+	 * Gets engine of an user agent.
+	 *
+	 * @return engine of an user agent
+	 */
+	@Nonnull
+	BrowserEngine getBrowserEngine();
+
 }

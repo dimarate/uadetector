@@ -48,9 +48,9 @@
 	</licenses>
 
 	<scm>
-		<connection>scm:git:git://github.com/before/uadetector.git</connection>
-		<developerConnection>scm:git:git@github.com:before/uadetector.git</developerConnection>
-		<url>https://github.com/before/uadetector</url>
+		<connection>scm:git:git://github.com/dimarate/uadetector.git</connection>
+		<developerConnection>scm:git:git@github.com:dimarate/uadetector-leon.git</developerConnection>
+		<url>https://github.com/dimarate/uadetector-leon</url>
 		<tag>HEAD</tag>
 	</scm>
 

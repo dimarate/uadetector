@@ -17,6 +17,8 @@ package net.sf.uadetector.parser;
 
 import static org.fest.assertions.Assertions.assertThat;
 import net.sf.qualitycheck.exception.IllegalNullArgumentException;
+import net.sf.uadetector.BrowserEngine;
+import net.sf.uadetector.BrowserEngineFamily;
 import net.sf.uadetector.DeviceCategory;
 import net.sf.uadetector.OperatingSystem;
 import net.sf.uadetector.OperatingSystemFamily;
@@ -123,6 +125,12 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.SMARTPHONE.getName());
 		assertThat(category.getIcon()).isEqualTo("phone.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Smartphone");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.WEBKIT, "", VersionNumber.parseVersion("537.10"));
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -155,6 +163,12 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.SMARTPHONE.getName());
 		assertThat(category.getIcon()).isEqualTo("phone.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Smartphone");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.UNKNOWN, "", VersionNumber.UNKNOWN);
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -187,6 +201,12 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.SMARTPHONE.getName());
 		assertThat(category.getIcon()).isEqualTo("phone.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Smartphone");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.WEBKIT, "", VersionNumber.parseVersion("534.11"));
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -211,7 +231,7 @@ public class UserAgentStringParserTest {
 		assertThat(os.getName()).isEqualTo("OS X 10.6 Snow Leopard");
 		assertThat(os.getProducer()).isEqualTo("Apple Computer, Inc.");
 		assertThat(os.getProducerUrl()).isEqualTo("http://www.apple.com/");
-		assertThat(os.getUrl()).isEqualTo("http://www.apple.com/osx/");
+		assertThat(os.getUrl()).isEqualTo("http://en.wikipedia.org/wiki/Mac_OS_X_Snow_Leopard");
 
 		// check device category informations
 		final DeviceCategory category = agent.getDeviceCategory();
@@ -219,6 +239,12 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.PERSONAL_COMPUTER.getName());
 		assertThat(category.getIcon()).isEqualTo("desktop.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Personal computer");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.WEBKIT, "", VersionNumber.parseVersion("535.1"));
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -242,7 +268,7 @@ public class UserAgentStringParserTest {
 		assertThat(os.getName()).isEqualTo("OS X 10.6 Snow Leopard");
 		assertThat(os.getProducer()).isEqualTo("Apple Computer, Inc.");
 		assertThat(os.getProducerUrl()).isEqualTo("http://www.apple.com/");
-		assertThat(os.getUrl()).isEqualTo("http://www.apple.com/osx/");
+		assertThat(os.getUrl()).isEqualTo("http://en.wikipedia.org/wiki/Mac_OS_X_Snow_Leopard");
 
 		// check device category informations
 		final DeviceCategory category = agent.getDeviceCategory();
@@ -250,6 +276,12 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.PERSONAL_COMPUTER.getName());
 		assertThat(category.getIcon()).isEqualTo("desktop.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Personal computer");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.WEBKIT, "", VersionNumber.parseVersion("535.1"));
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -277,7 +309,7 @@ public class UserAgentStringParserTest {
 		assertThat(os.getName()).isEqualTo("OS X 10.6 Snow Leopard");
 		assertThat(os.getProducer()).isEqualTo("Apple Computer, Inc.");
 		assertThat(os.getProducerUrl()).isEqualTo("http://www.apple.com/");
-		assertThat(os.getUrl()).isEqualTo("http://www.apple.com/osx/");
+		assertThat(os.getUrl()).isEqualTo("http://en.wikipedia.org/wiki/Mac_OS_X_Snow_Leopard");
 		assertThat(os.getVersionNumber().toVersionString()).isEqualTo("10.6.8");
 
 		// check device category informations
@@ -286,6 +318,12 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.PERSONAL_COMPUTER.getName());
 		assertThat(category.getIcon()).isEqualTo("desktop.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Personal computer");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.WEBKIT, "", VersionNumber.parseVersion("535.1"));
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -313,7 +351,7 @@ public class UserAgentStringParserTest {
 		assertThat(os.getName()).isEqualTo("OS X 10.7 Lion");
 		assertThat(os.getProducer()).isEqualTo("Apple Computer, Inc.");
 		assertThat(os.getProducerUrl()).isEqualTo("http://www.apple.com/");
-		assertThat(os.getUrl()).isEqualTo("http://www.apple.com/osx/");
+		assertThat(os.getUrl()).isEqualTo("http://en.wikipedia.org/wiki/Mac_OS_X_Lion");
 		assertThat(os.getVersionNumber().toVersionString()).isEqualTo("10.7.4");
 
 		// check device category informations
@@ -322,6 +360,12 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.PERSONAL_COMPUTER.getName());
 		assertThat(category.getIcon()).isEqualTo("desktop.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Personal computer");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.WEBKIT, "", VersionNumber.parseVersion("536.5"));
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -348,6 +392,12 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.PERSONAL_COMPUTER.getName());
 		assertThat(category.getIcon()).isEqualTo("desktop.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Personal computer");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.UNKNOWN, "", VersionNumber.UNKNOWN);
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -384,6 +434,12 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.PERSONAL_COMPUTER.getName());
 		assertThat(category.getIcon()).isEqualTo("desktop.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Personal computer");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.UNKNOWN, "", VersionNumber.UNKNOWN);
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -411,7 +467,7 @@ public class UserAgentStringParserTest {
 		assertThat(os.getName()).isEqualTo("OS X 10.7 Lion");
 		assertThat(os.getProducer()).isEqualTo("Apple Computer, Inc.");
 		assertThat(os.getProducerUrl()).isEqualTo("http://www.apple.com/");
-		assertThat(os.getUrl()).isEqualTo("http://www.apple.com/osx/");
+		assertThat(os.getUrl()).isEqualTo("http://en.wikipedia.org/wiki/Mac_OS_X_Lion");
 		assertThat(os.getVersionNumber().toVersionString()).isEqualTo("10.7");
 
 		// check device category informations
@@ -420,6 +476,12 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.PERSONAL_COMPUTER.getName());
 		assertThat(category.getIcon()).isEqualTo("desktop.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Personal computer");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.GECKO, "", VersionNumber.parseVersion("20100101"));
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -456,6 +518,12 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.PERSONAL_COMPUTER.getName());
 		assertThat(category.getIcon()).isEqualTo("desktop.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Personal computer");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.GECKO, "", VersionNumber.parseVersion("20091112"));
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -492,6 +560,12 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.PERSONAL_COMPUTER.getName());
 		assertThat(category.getIcon()).isEqualTo("desktop.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Personal computer");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.TRIDENT, "", VersionNumber.parseVersion("4.0"));
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -528,6 +602,12 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.OTHER.getName());
 		assertThat(category.getIcon()).isEqualTo("other.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Other");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.UNKNOWN, "", VersionNumber.UNKNOWN);
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -564,6 +644,12 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.SMARTPHONE.getName());
 		assertThat(category.getIcon()).isEqualTo("phone.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Smartphone");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.UNKNOWN, "", VersionNumber.UNKNOWN);
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -596,10 +682,16 @@ public class UserAgentStringParserTest {
 
 		// check device category informations
 		final DeviceCategory category = agent.getDeviceCategory();
-		assertThat(category.getCategory()).isEqualTo(Category.TABLET);
-		assertThat(category.getName()).isEqualTo(Category.TABLET.getName());
-		assertThat(category.getIcon()).isEqualTo("tablet.png");
-		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Tablet");
+		assertThat(category.getCategory()).isEqualTo(Category.SMARTPHONE);
+		assertThat(category.getName()).isEqualTo(Category.SMARTPHONE.getName());
+		assertThat(category.getIcon()).isEqualTo("phone.png");
+		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Smartphone");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.WEBKIT, "", VersionNumber.parseVersion("535.7"));
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -611,7 +703,7 @@ public class UserAgentStringParserTest {
 		// check user agent informations
 		assertThat(agent.getFamily()).isEqualTo(UserAgentFamily.MOBILE_SAFARI);
 		assertThat(agent.getIcon()).isEqualTo("safari.png");
-		assertThat(agent.getName()).isEqualTo("Mobile Safari");
+		assertThat(agent.getName()).isEqualTo("Safari mobile");
 		assertThat(agent.getProducer()).isEqualTo("Apple Inc.");
 		assertThat(agent.getProducerUrl()).isEqualTo("http://www.apple.com/");
 		assertThat(agent.getType()).isEqualTo(UserAgentType.MOBILE_BROWSER);
@@ -636,6 +728,12 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.TABLET.getName());
 		assertThat(category.getIcon()).isEqualTo("tablet.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Tablet");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.WEBKIT, "", VersionNumber.parseVersion("533.17.9"));
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -647,7 +745,7 @@ public class UserAgentStringParserTest {
 		// check user agent informations
 		assertThat(agent.getFamily()).isEqualTo(UserAgentFamily.MOBILE_SAFARI);
 		assertThat(agent.getIcon()).isEqualTo("safari.png");
-		assertThat(agent.getName()).isEqualTo("Mobile Safari");
+		assertThat(agent.getName()).isEqualTo("Safari mobile");
 		assertThat(agent.getProducer()).isEqualTo("Apple Inc.");
 		assertThat(agent.getProducerUrl()).isEqualTo("http://www.apple.com/");
 		assertThat(agent.getType()).isEqualTo(UserAgentType.MOBILE_BROWSER);
@@ -672,6 +770,12 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.TABLET.getName());
 		assertThat(category.getIcon()).isEqualTo("tablet.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Tablet");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.WEBKIT, "", VersionNumber.parseVersion("534.46"));
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -683,7 +787,7 @@ public class UserAgentStringParserTest {
 		// check user agent informations
 		assertThat(agent.getFamily()).isEqualTo(UserAgentFamily.MOBILE_SAFARI);
 		assertThat(agent.getIcon()).isEqualTo("safari.png");
-		assertThat(agent.getName()).isEqualTo("Mobile Safari");
+		assertThat(agent.getName()).isEqualTo("Safari mobile");
 		assertThat(agent.getProducer()).isEqualTo("Apple Inc.");
 		assertThat(agent.getProducerUrl()).isEqualTo("http://www.apple.com/");
 		assertThat(agent.getType()).isEqualTo(UserAgentType.MOBILE_BROWSER);
@@ -708,6 +812,12 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.SMARTPHONE.getName());
 		assertThat(category.getIcon()).isEqualTo("phone.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Smartphone");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.WEBKIT, "", VersionNumber.parseVersion("534.46"));
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -724,7 +834,7 @@ public class UserAgentStringParserTest {
 		assertThat(agent.getProducerUrl()).isEqualTo("http://www.opera.com/");
 		assertThat(agent.getType()).isEqualTo(UserAgentType.BROWSER);
 		assertThat(agent.getTypeName()).isEqualTo("Browser");
-		assertThat(agent.getUrl()).isEqualTo("http://www.opera.com/");
+		assertThat(agent.getUrl()).isEqualTo("http://en.wikipedia.org/wiki/Opera_(browser)");
 		assertThat(agent.getVersionNumber().toVersionString()).isEqualTo("10.00");
 
 		// check operating system informations
@@ -744,6 +854,12 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.PERSONAL_COMPUTER.getName());
 		assertThat(category.getIcon()).isEqualTo("desktop.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Personal computer");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.PRESTO, "", VersionNumber.parseVersion("2.2.15"));
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -771,7 +887,7 @@ public class UserAgentStringParserTest {
 		assertThat(os.getName()).isEqualTo("OS X 10.7 Lion");
 		assertThat(os.getProducer()).isEqualTo("Apple Computer, Inc.");
 		assertThat(os.getProducerUrl()).isEqualTo("http://www.apple.com/");
-		assertThat(os.getUrl()).isEqualTo("http://www.apple.com/osx/");
+		assertThat(os.getUrl()).isEqualTo("http://en.wikipedia.org/wiki/Mac_OS_X_Lion");
 		assertThat(os.getVersionNumber().toVersionString()).isEqualTo("10.7.3");
 
 		// check device category informations
@@ -780,6 +896,12 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.PERSONAL_COMPUTER.getName());
 		assertThat(category.getIcon()).isEqualTo("desktop.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Personal computer");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.WEBKIT, "", VersionNumber.parseVersion("534.55.3"));
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -813,6 +935,12 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.TABLET.getName());
 		assertThat(category.getIcon()).isEqualTo("tablet.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Tablet");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.WEBKIT, "", VersionNumber.parseVersion("533.1"));
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -845,6 +973,12 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.PERSONAL_COMPUTER.getName());
 		assertThat(category.getIcon()).isEqualTo("desktop.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Personal computer");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.UNKNOWN, "", VersionNumber.UNKNOWN);
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -869,7 +1003,7 @@ public class UserAgentStringParserTest {
 		assertThat(os.getName()).isEqualTo("OS X 10.5 Leopard");
 		assertThat(os.getProducer()).isEqualTo("Apple Computer, Inc.");
 		assertThat(os.getProducerUrl()).isEqualTo("http://www.apple.com/");
-		assertThat(os.getUrl()).isEqualTo("http://www.apple.com/osx/");
+		assertThat(os.getUrl()).isEqualTo("http://en.wikipedia.org/wiki/Mac_OS_X_Leopard");
 
 		// check device category informations
 		final DeviceCategory category = agent.getDeviceCategory();
@@ -877,6 +1011,12 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.SMARTPHONE.getName());
 		assertThat(category.getIcon()).isEqualTo("phone.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Smartphone");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.WEBKIT, "", VersionNumber.parseVersion("530.17"));
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -903,6 +1043,76 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.SMARTPHONE.getName());
 		assertThat(category.getIcon()).isEqualTo("phone.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Smartphone");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.WEBKIT, "", VersionNumber.parseVersion("530.17"));
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
+	}
+
+	@Test
+	public void parse_browser_Cordova_Android() throws Exception {
+		final String userAgent = "Mozilla/5.0 (Linux; Android 4.4.2; LG-D686 Build/KOT49I.D68620d) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36 cordova/android";
+		final UserAgent agent = PARSER.parse(userAgent);
+		assertThat(agent).isNotNull();
+
+		// check user agent informations
+		assertThat(agent.getFamily()).isEqualTo(UserAgentFamily.CHROME_CORDOVA);
+		assertThat(agent.getName()).isEqualTo("Chrome Cordova");
+		assertThat(agent.getProducer()).isEqualTo("The Apache Software Foundation");
+		assertThat(agent.getProducerUrl()).isEqualTo("http://apache.org/");
+		assertThat(agent.getTypeName()).isEqualTo("Mobile Browser");
+		assertThat(agent.getUrl()).isEqualTo("https://cordova.apache.org/");
+		assertThat(agent.getVersionNumber().toVersionString()).isEqualTo("30.0.0.0");
+
+		// check operating system informations
+		assertThat(agent.getOperatingSystem().getFamily()).isEqualTo(OperatingSystemFamily.ANDROID);
+
+		// check device category informations
+		final DeviceCategory category = agent.getDeviceCategory();
+		assertThat(category.getCategory()).isEqualTo(Category.SMARTPHONE);
+		assertThat(category.getName()).isEqualTo(Category.SMARTPHONE.getName());
+		assertThat(category.getIcon()).isEqualTo("phone.png");
+		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Smartphone");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.BLINK, "", VersionNumber.parseVersion("537.36"));
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
+	}
+
+	@Test
+	public void parse_browser_Chrome_Mobile() throws Exception {
+		final String userAgent = "Mozilla/5.0 (Linux; U; Android 4.4.2; ru-ru; LG-D686 Build/KOT49I.D68620d) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.1599.103 Mobile Safari/537.36";
+		final UserAgent agent = PARSER.parse(userAgent);
+		assertThat(agent).isNotNull();
+
+		// check user agent informations
+		assertThat(agent.getFamily()).isEqualTo(UserAgentFamily.CHROME_MOBILE);
+		assertThat(agent.getName()).isEqualTo("Chrome Mobile");
+		assertThat(agent.getProducer()).isEqualTo("Google Inc.");
+		assertThat(agent.getProducerUrl()).isEqualTo("http://www.google.com/");
+		assertThat(agent.getTypeName()).isEqualTo("Mobile Browser");
+		assertThat(agent.getUrl()).isEqualTo("http://www.google.com/intl/en/chrome/browser/mobile/");
+		assertThat(agent.getVersionNumber().toVersionString()).isEqualTo("30.0.1599.103");
+
+		// check operating system informations
+		assertThat(agent.getOperatingSystem().getFamily()).isEqualTo(OperatingSystemFamily.ANDROID);
+
+		// check device category informations
+		final DeviceCategory category = agent.getDeviceCategory();
+		assertThat(category.getCategory()).isEqualTo(Category.SMARTPHONE);
+		assertThat(category.getName()).isEqualTo(Category.SMARTPHONE.getName());
+		assertThat(category.getIcon()).isEqualTo("phone.png");
+		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Smartphone");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.BLINK, "", VersionNumber.parseVersion("537.36"));
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -923,6 +1133,12 @@ public class UserAgentStringParserTest {
 
 		// check device category informations
 		assertThat(agent.getDeviceCategory()).isEqualTo(DeviceCategory.EMPTY);
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.UNKNOWN, "", VersionNumber.UNKNOWN);
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -947,6 +1163,12 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.OTHER.getName());
 		assertThat(category.getIcon()).isEqualTo("other.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Other");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.UNKNOWN, "", VersionNumber.UNKNOWN);
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -972,6 +1194,12 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.OTHER.getName());
 		assertThat(category.getIcon()).isEqualTo("other.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Other");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.UNKNOWN, "", VersionNumber.UNKNOWN);
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -999,6 +1227,12 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.OTHER.getName());
 		assertThat(category.getIcon()).isEqualTo("other.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Other");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.UNKNOWN, "", VersionNumber.UNKNOWN);
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -1020,6 +1254,12 @@ public class UserAgentStringParserTest {
 
 		// check device category informations
 		assertThat(agent.getDeviceCategory()).isEqualTo(DeviceCategory.EMPTY);
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.UNKNOWN, "", VersionNumber.UNKNOWN);
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test
@@ -1047,6 +1287,12 @@ public class UserAgentStringParserTest {
 		assertThat(category.getName()).isEqualTo(Category.OTHER.getName());
 		assertThat(category.getIcon()).isEqualTo("other.png");
 		assertThat(category.getInfoUrl()).isEqualTo("/list-of-ua/device-detail?device=Other");
+
+		// check browser engine informations
+		final BrowserEngine actualBrowserEngine = agent.getBrowserEngine();
+		final BrowserEngine expectedBrowserEngine = new BrowserEngine(BrowserEngineFamily.UNKNOWN, "", VersionNumber.UNKNOWN);
+		assertThat(actualBrowserEngine.getFamily()).isEqualTo(expectedBrowserEngine.getFamily());
+		assertThat(actualBrowserEngine.getVersionNumber()).isEqualTo(expectedBrowserEngine.getVersionNumber());
 	}
 
 	@Test

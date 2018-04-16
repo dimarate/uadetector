@@ -33,6 +33,8 @@ import javax.annotation.concurrent.NotThreadSafe;
 import net.sf.qualitycheck.Check;
 import net.sf.qualitycheck.exception.IllegalStateOfArgumentException;
 import net.sf.uadetector.internal.data.domain.Browser;
+import net.sf.uadetector.internal.data.domain.BrowserEngine;
+import net.sf.uadetector.internal.data.domain.BrowserEnginePattern;
 import net.sf.uadetector.internal.data.domain.BrowserOperatingSystemMapping;
 import net.sf.uadetector.internal.data.domain.BrowserPattern;
 import net.sf.uadetector.internal.data.domain.BrowserType;
@@ -119,6 +121,18 @@ public class DataBuilder {
 		}
 	}
 
+	private static void addPatternToBrowserEngine(final Map<Integer, BrowserEngine.Builder> builders,
+													final Map<Integer, SortedSet<BrowserEnginePattern>> patterns) {
+		for (final Map.Entry<Integer, BrowserEngine.Builder> entry : builders.entrySet()) {
+			final SortedSet<BrowserEnginePattern> patternSet = patterns.get(entry.getKey());
+			if (patternSet != null) {
+				entry.getValue().addPatterns(patternSet);
+			} else {
+				LOG.debug("No patterns for browser engine entry (with id '" + entry.getKey() + "') available.");
+			}
+		}
+	}
+
 	private static Set<Browser> buildBrowsers(final Map<Integer, Browser.Builder> browserBuilders) {
 		final Set<Browser> browsers = new HashSet<Browser>();
 		for (final Map.Entry<Integer, Browser.Builder> entry : browserBuilders.entrySet()) {
@@ -153,6 +167,28 @@ public class DataBuilder {
 			}
 		}
 		return operatingSystems;
+	}
+
+	private static Set<BrowserEngine> buildBrowserEngines(final Map<Integer, BrowserEngine.Builder> browserEngineBuilders) {
+		final Set<BrowserEngine> browserEngines = new HashSet<BrowserEngine>();
+		for (final Map.Entry<Integer, BrowserEngine.Builder> entry : browserEngineBuilders.entrySet()) {
+			try {
+				browserEngines.add(entry.getValue().build());
+			} catch (final Exception e) {
+				LOG.warn("Can not build device '" + entry.getValue().getFamilyName() + "': " + e.getLocalizedMessage());
+			}
+		}
+		return browserEngines;
+	}
+
+	private static SortedMap<BrowserEnginePattern, BrowserEngine> buildPatternToBrowserEngineMap(final Set<BrowserEngine> browserEngineSet) {
+		final SortedMap<BrowserEnginePattern, BrowserEngine> patternBrowserEngine = new TreeMap<BrowserEnginePattern, BrowserEngine>(BROWSER_ENGINE_PATTERN_COMPARATOR);
+		for (final BrowserEngine browserEngine : browserEngineSet) {
+			for (final BrowserEnginePattern pattern : browserEngine.getPatterns()) {
+				patternBrowserEngine.put(pattern, browserEngine);
+			}
+		}
+		return patternBrowserEngine;
 	}
 
 	private static SortedMap<BrowserPattern, Browser> buildPatternToBrowserMap(final Set<Browser> browserSet) {
@@ -224,6 +260,9 @@ public class DataBuilder {
 	private final Map<Integer, Device.Builder> deviceBuilders = new HashMap<Integer, Device.Builder>();
 
 	@Nonnull
+	private final Map<Integer, BrowserEngine.Builder> browserEngineBuilders = new HashMap<Integer, BrowserEngine.Builder>();
+
+	@Nonnull
 	private final Map<Integer, SortedSet<DevicePattern>> devicePatterns = new HashMap<Integer, SortedSet<DevicePattern>>();
 
 	@Nonnull
@@ -238,6 +277,12 @@ public class DataBuilder {
 	private String version;
 
 	@Nonnull
+	private final Set<BrowserEngine> browserEngines = new HashSet<BrowserEngine>();
+
+	@Nonnull
+	private final Map<Integer, SortedSet<BrowserEnginePattern>> browserEnginePatterns = new HashMap<Integer, SortedSet<BrowserEnginePattern>>();
+
+	@Nonnull
 	private final Set<BrowserOperatingSystemMapping> browserToOperatingSystemMap = new HashSet<BrowserOperatingSystemMapping>();
 
 	private static final OrderedPatternComparator<BrowserPattern> BROWSER_PATTERN_COMPARATOR = new OrderedPatternComparator<BrowserPattern>();
@@ -245,6 +290,8 @@ public class DataBuilder {
 	private static final OrderedPatternComparator<DevicePattern> DEVICE_PATTERN_COMPARATOR = new OrderedPatternComparator<DevicePattern>();
 
 	private static final OrderedPatternComparator<OperatingSystemPattern> OS_PATTERN_COMPARATOR = new OrderedPatternComparator<OperatingSystemPattern>();
+
+	private static final OrderedPatternComparator<BrowserEnginePattern> BROWSER_ENGINE_PATTERN_COMPARATOR = new OrderedPatternComparator<BrowserEnginePattern>();
 
 	public DataBuilder appendBrowser(@Nonnull final Browser browser) {
 		Check.notNull(browser, "browser");
@@ -353,6 +400,32 @@ public class DataBuilder {
 	}
 
 	/**
+	 * Appends a copy of the given {@code BrowserEngine.Builder} to the internal data structure.
+	 *
+	 * @param browserEngineBuilder
+	 *            {@code BrowserEngine.Builder} to be copied and appended
+	 * @return this {@code Builder}, for chaining
+	 * @throws net.sf.qualitycheck.exception.IllegalNullArgumentException
+	 *             if the given argument is {@code null}
+	 * @throws net.sf.qualitycheck.exception.IllegalStateOfArgumentException
+	 *             if the ID of the given builder is invalid
+	 * @throws net.sf.qualitycheck.exception.IllegalStateOfArgumentException
+	 *             if a builder with the same ID already exists
+	 */
+	@Nonnull
+	public DataBuilder appendBrowserEngineBuilder(@Nonnull final BrowserEngine.Builder browserEngineBuilder) {
+		Check.notNull(browserEngineBuilder, "browserEngineBuilder");
+		Check.notNegative(browserEngineBuilder.getId(), "browserEngineBuilder.getId()");
+		if (browserEngineBuilders.containsKey(browserEngineBuilder.getId())) {
+			throw new IllegalStateOfArgumentException("The browser engine builder '" + browserEngineBuilder.getFamilyName() + "' is already in the map.");
+		}
+
+		final BrowserEngine.Builder builder = browserEngineBuilder.copy();
+		browserEngineBuilders.put(builder.getId(), builder);
+		return this;
+	}
+
+	/**
 	 * Appends a device pattern to the map of pattern sorted by ID.
 	 * 
 	 * @param pattern
@@ -369,6 +442,26 @@ public class DataBuilder {
 		}
 
 		devicePatterns.get(pattern.getId()).add(pattern);
+		return this;
+	}
+
+	/**
+	 * Appends a browser engine pattern to the map of pattern sorted by ID.
+	 *
+	 * @param pattern
+	 *            a pattern for a browser engine
+	 * @return itself
+	 * @throws net.sf.qualitycheck.exception.IllegalNullArgumentException
+	 *             if the given argument is {@code null}
+	 */
+	@Nonnull
+	public DataBuilder appendBrowserEnginePattern(@Nonnull final BrowserEnginePattern pattern) {
+		Check.notNull(pattern, "pattern");
+		if (!browserEnginePatterns.containsKey(pattern.getId())) {
+			browserEnginePatterns.put(pattern.getId(), new TreeSet<BrowserEnginePattern>(BROWSER_ENGINE_PATTERN_COMPARATOR));
+		}
+
+		browserEnginePatterns.get(pattern.getId()).add(pattern);
 		return this;
 	}
 
@@ -440,6 +533,7 @@ public class DataBuilder {
 		addPatternToBrowser(browserBuilders, browserPatterns);
 		addPatternToOperatingSystem(operatingSystemBuilders, operatingSystemPatterns);
 		addPatternToDevice(deviceBuilders, devicePatterns);
+		addPatternToBrowserEngine(browserEngineBuilders, browserEnginePatterns);
 
 		final Map<Integer, OperatingSystem> systems = buildOperatingSystems(operatingSystemBuilders);
 		addOperatingSystemToBrowser(browserBuilders, systems, convertBrowserOsMapping(browserToOperatingSystemMap));
@@ -453,12 +547,17 @@ public class DataBuilder {
 		final Set<Device> deviceSet = buildDevices(deviceBuilders);
 		deviceSet.addAll(devices);
 
+		final Set<BrowserEngine> browserEngineSet = buildBrowserEngines(browserEngineBuilders);
+		browserEngineSet.addAll(browserEngines);
+
 		final SortedMap<BrowserPattern, Browser> patternToBrowserMap = buildPatternToBrowserMap(browserSet);
 		final SortedMap<OperatingSystemPattern, OperatingSystem> patternToOperatingSystemMap = buildPatternToOperatingSystemMap(osSet);
 		final SortedMap<DevicePattern, Device> patternToDeviceMap = buildPatternToDeviceMap(deviceSet);
+		final SortedMap<BrowserEnginePattern, BrowserEngine> patternToBrowserEngineMap = buildPatternToBrowserEngineMap(browserEngineSet);
 
 		return new Data(browserSet, browserPatterns, browserTypes, patternToBrowserMap, browserToOperatingSystemMap, osSet,
-				operatingSystemPatterns, patternToOperatingSystemMap, robots, deviceSet, devicePatterns, patternToDeviceMap, version);
+				operatingSystemPatterns, patternToOperatingSystemMap, robots, deviceSet, devicePatterns, patternToDeviceMap,
+				version, browserEngineSet, browserEnginePatterns, patternToBrowserEngineMap);
 	}
 
 	@Nonnull

@@ -24,6 +24,8 @@ import net.sf.uadetector.datareader.DataReader;
 import net.sf.uadetector.datastore.DataStore;
 import net.sf.uadetector.internal.data.Data;
 import net.sf.uadetector.internal.data.domain.Browser;
+import net.sf.uadetector.internal.data.domain.BrowserEngine;
+import net.sf.uadetector.internal.data.domain.BrowserEnginePattern;
 import net.sf.uadetector.internal.data.domain.BrowserOperatingSystemMapping;
 import net.sf.uadetector.internal.data.domain.BrowserPattern;
 import net.sf.uadetector.internal.data.domain.BrowserType;
@@ -57,6 +59,9 @@ public class AbstractUserAgentStringParserTest {
 		final Map<Integer, SortedSet<DevicePattern>> devicePatterns = new HashMap<Integer, SortedSet<DevicePattern>>(0);
 		final SortedMap<DevicePattern, Device> patternToDeviceMap = new TreeMap<DevicePattern, Device>();
 		final String version = "test-version";
+		final Set<BrowserEngine> browserEngines = new HashSet<BrowserEngine>();
+		final Map<Integer, SortedSet<BrowserEnginePattern>> browserEnginePatterns = new HashMap<Integer, SortedSet<BrowserEnginePattern>>();
+		final SortedMap<BrowserEnginePattern, BrowserEngine> patternToBrowserEngineMap = new TreeMap<BrowserEnginePattern, BrowserEngine>();
 
 		// fill structures with data
 		final TreeSet<BrowserPattern> browserPatternSet = Sets.newTreeSet();
@@ -76,7 +81,7 @@ public class AbstractUserAgentStringParserTest {
 		// create Data instance
 		final Data data = new Data(browsers, browserPatterns, browserTypes, patternToBrowserMap, browserToOperatingSystemMappings,
 				operatingSystems, operatingSystemPatterns, patternToOperatingSystemMap, robots, devices, devicePatterns,
-				patternToDeviceMap, version);
+				patternToDeviceMap, version, browserEngines, browserEnginePatterns, patternToBrowserEngineMap);
 
 		final UserAgentStringParser parser = new UserAgentStringParserImpl<DataStore>(new DataStore() {
 			@Override

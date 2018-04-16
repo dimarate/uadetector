@@ -12195,7 +12195,7 @@
 				<id>85</id>
 				<family>OS X</family>
 				<name>OS X 10.6 Snow Leopard</name>
-				<url><![CDATA[http://www.apple.com/osx/]]></url>
+				<url><![CDATA[http://en.wikipedia.org/wiki/Mac_OS_X_Snow_Leopard]]></url>
 				<company><![CDATA[Apple Computer, Inc.]]></company>
 				<url_company><![CDATA[http://www.apple.com/]]></url_company>
 				<icon>macosx.png</icon>
@@ -21224,5 +21224,89 @@
 				<regstring>/j2me/si</regstring>
 			</device_reg>
 		</devices_reg>
+		<browser_engines>
+			<engine>
+				<id>1</id>
+				<name>Blink</name>
+				<engine_info_url><![CDATA[https://en.wikipedia.org/wiki/Blink_(web_engine)]]></engine_info_url>
+			</engine>
+			<engine>
+				<id>2</id>
+				<name>WebKit</name>
+				<engine_info_url><![CDATA[https://en.wikipedia.org/wiki/WebKit]]></engine_info_url>
+			</engine>
+			<engine>
+				<id>3</id>
+				<name>Trident</name>
+				<engine_info_url><![CDATA[https://en.wikipedia.org/wiki/Trident_(layout_engine)]]></engine_info_url>
+			</engine>
+			<engine>
+				<id>4</id>
+				<name>Presto</name>
+				<engine_info_url><![CDATA[https://en.wikipedia.org/wiki/Presto_(layout_engine)]]></engine_info_url>
+			</engine>
+			<engine>
+				<id>5</id>
+				<name>Gecko</name>
+				<engine_info_url><![CDATA[https://en.wikipedia.org/wiki/Gecko_(software)]]></engine_info_url>
+			</engine>
+			<engine>
+				<id>6</id>
+				<name>Edge</name>
+				<engine_info_url><![CDATA[https://en.wikipedia.org/wiki/EdgeHTML]]></engine_info_url>
+			</engine>
+			<engine>
+				<id>7</id>
+				<name>Netfront</name>
+				<engine_info_url><![CDATA[https://en.wikipedia.org/wiki/NetFront]]></engine_info_url>
+			</engine>
+			<engine>
+				<id>8</id>
+				<name>Khtml</name>
+				<engine_info_url><![CDATA[https://en.wikipedia.org/wiki/KHTML]]></engine_info_url>
+			</engine>
+		</browser_engines>
+		<browser_engines_reg>
+			<browser_engine_reg>
+				<order>1</order>
+				<engine_id>8</engine_id>
+				<regstring>/KHTML\/([0-9\.]+)/si</regstring>
+			</browser_engine_reg>
+			<browser_engine_reg>
+				<order>2</order>
+				<engine_id>7</engine_id>
+				<regstring>/NetFront\/([0-9\.]+)/si</regstring>
+			</browser_engine_reg>
+			<browser_engine_reg>
+				<order>3</order>
+				<engine_id>6</engine_id>
+				<regstring>/Edge\/([0-9\.]+)/si</regstring>
+			</browser_engine_reg>
+			<browser_engine_reg>
+				<order>4</order>
+				<engine_id>5</engine_id>
+				<regstring>/Gecko\/([0-9\.]+)/si</regstring>
+			</browser_engine_reg>
+			<browser_engine_reg>
+				<order>5</order>
+				<engine_id>4</engine_id>
+				<regstring>/Presto\/([0-9\.]+)/si</regstring>
+			</browser_engine_reg>
+			<browser_engine_reg>
+				<order>6</order>
+				<engine_id>3</engine_id>
+				<regstring>/(?:Trident\/([0-9\.]+)|MSIE)/si</regstring>
+			</browser_engine_reg>
+			<browser_engine_reg>
+				<order>7</order>
+				<engine_id>1</engine_id>
+				<regstring>/WebKit\/([0-9\.]+).*Chrome\/(?:(?:2[8-9]|[3-9])[0-9\.]+)/si</regstring>
+			</browser_engine_reg>
+			<browser_engine_reg>
+				<order>8</order>
+				<engine_id>2</engine_id>
+				<regstring>/WebKit\/([0-9\.]+)/si</regstring>
+			</browser_engine_reg>
+		</browser_engines_reg>
 	</data>
 </uasdata>
